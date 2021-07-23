@@ -15,7 +15,12 @@ const restaurants = [
     title: 'Hot Burger Чорновола',
     url: 'hot-burger-chornovola',
     id: 3
-  }
+  },
+  {
+    title: 'Hot Burger Липинського',
+    url: 'hot-burger-Lupinskogo',
+    id: 4
+  },
 ];
 
 export default restaurants;
