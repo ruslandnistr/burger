@@ -1,5 +1,6 @@
 import React from 'react';
 import Shipment from './Shipment';
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 class Order extends React.Component {
 
@@ -11,20 +12,31 @@ renderOrder = (key) => {
             if(!burger) return null
 
             if(!isAvailable){
-                return <li className = 'unavailable' key={key}>
+                return(
+                    <CSSTransition classNames='order' key={key} timeout={{enter: 500, exit: 500}}>
+                     <li className = 'unavailable' key={key}>
                     Вибачте , {burger ? burger.name : 'бургер'} недоступний!
                 </li>
-            }
-   return <li  key={key} >
-       <span>
-           <span>{count}</span>
-           шт.{burger.name}
-           <span>{count * burger.price}₴</span>
-           <button className='cancelItem'
-           onClick = {()=> this.props.deleteFromOrder(key)}
-           >&times;</button>
-       </span>
-   </li> 
+                </CSSTransition>
+                )}
+   return(
+        <CSSTransition classNames='order' key={key} timeout={{enter: 500, exit:500}}>
+        <li  key={key} >
+            <span>
+                <TransitionGroup component='span' className='count'>
+                    <CSSTransition className='count' key={count} timeout={{enter: 500, exit: 500}} >
+                        <span>{count}</span>
+                        </CSSTransition>
+                    шт.{burger.name}
+                    <span>{count * burger.price}₴</span>
+                    <button className='cancelItem'
+                    onClick = {()=> this.props.deleteFromOrder(key)}
+                    >&times;</button>
+                </TransitionGroup>
+            </span>
+        </li>
+    </CSSTransition>
+    );
 }
 
     render() {
@@ -45,9 +57,9 @@ renderOrder = (key) => {
         return(
             <div className='order-wrap'>
                 <h2>Ваше замовлення</h2>
-                <ul className='order'>
+                <TransitionGroup component='ul' className='order'>
                 {orderIds.map(this.renderOrder)}
-                </ul>
+                </TransitionGroup>
                {total > 0 ? (< Shipment total={total}/>
                ) :
                (<div className='nothingSelected' > Виберіть страву і добавте в замовлення </div> ) }
