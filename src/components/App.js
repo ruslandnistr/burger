@@ -1,13 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Header from './Header';
 import Order from './Order';
 import MenuAdmin from './MenuAdmin';
 import Burger from './Burger';
 import sampleBurgers from '../sample-burgers'
 import base from '../base';
+import firebase from 'firebase/app'
+import SignIn from './auth/SingIn';
+
 
 
 class App extends React.Component {
+
+static propTypes = {
+    match : PropTypes.object
+}
+
     state = {
         burgers: {},
         order: {}
@@ -68,8 +77,16 @@ deleteFromOrder = key => {
     delete order[key];
     this.setState({order})
 }
+handleLogout = async () => {
+    await firebase.auth().signOut();
+    window.location.reload();
+};
+
     render() {
+        
+
         return(
+            <SignIn>
             <div className='burger-paradise'>
                 <div className ='menu' >
                     <Header title='Very Hot Burger' amount={10} hot={true} />
@@ -95,8 +112,10 @@ deleteFromOrder = key => {
                 burgers={this.state.burgers}
                 updateBurger={this.updateBurger}
                 deleteBurger={this.deleteBurger}
+                handLeLogout={this.handleLogout}
                 />
             </div>
+            </SignIn>
         )
     }
 }

@@ -1,61 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import restaurants from '../sample-restaurants';
 
-class Landing extends React.Component {
-    state= {
-        display: false,
-        title: '',
-        url: ''
-    };
+const Landing = props => {
+  const [display, toggleDisplay] = useState(false);
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
 
-    displayList = () => {
-        const{ display } =this.state;
-        this.setState({ display:!display })
-    }; 
-    
-    getTitle = restaurant => {
-        const {title, url} = restaurant;
-        this.setState({ title: title, url: url, display: false })
-    }
-    goToRestaurant = () => {
-        const { url } = this.state;
-        this.props.history.push(`/restaurant/${url}`);
-    }
+  const displayList = () => {
+    toggleDisplay(!display);
+  };
 
-    render(){
-      
-        return(
-           
-                <div className='restaurant_select'>
-                <div className='restaurant_select_top'>
-                    <div 
-                    onClick={this.displayList} 
-                    className='restaurant_select_top-heder font-effect-outline' >
-                        {this.state.title ? this.state.title : 'Вибери ресторан'}
-                        </div>
-                    <div className='arrow_picker'>
-                        <div className='arrow_picker-up'></div>
-                        <div className='arrow_picker-down'></div>
-                    </div>
-                </div>
-                {this.state.display ? (<div className='restaurant_select_bottom'>
-                    <ul>
-                   { restaurants.map(restaurant => {
-                     return <li onClick={()=>this.getTitle(restaurant)} key={restaurant.id}>{restaurant.title}</li>
-                     })}
-                    </ul>
+  const getTitle = restaurant => {
+    const { title, url } = restaurant;
+    setTitle(title);
+    setUrl(url);
+    toggleDisplay(false);
+  };
 
-                </div>): null}
-                {this.state.title && !this.state.display ? 
-                <button onClick={this.goToRestaurant}>Перейти в ресторан</button> :
-                 null}
-            </div>
-            
-            
-        
-        );
-    }
-}
+  const gotToRestaurant = () => {
+    props.history.push(`/restaurant/${url}`);
+  };
 
+  return (
+    <div className='restaurant_select'>
+      <div className='restaurant_select_top'>
+        <div
+          onClick={displayList}
+          className='restaurant_select_top-header font-effect-outline'
+        >
+          {title ? title : 'Выбери ресторан'}
+        </div>
+        <div className='arrow_picker'>
+          <div className='arrow_picker-up'></div>
+          <div className='arrow_picker-down'></div>
+        </div>
+      </div>
+
+      {display ? (
+        <div className='restaurant_select_bottom'>
+          <ul>
+            {restaurants.map(restaurant => {
+              return (
+                <li onClick={() => getTitle(restaurant)} key={restaurant.id}>
+                  {restaurant.title}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : null}
+
+      {title && !display ? (
+        <button onClick={gotToRestaurant}>Перейти в ресторан</button>
+      ) : null}
+    </div>
+  );
+};
+
+Landing.propTypes = {
+  history: PropTypes.object
+};
 
 export default Landing;
