@@ -39,7 +39,16 @@ static propTypes = {
     componentDidUpdate(){
         const { params } = this.props.match;
         localStorage.setItem(params.restaurantId, JSON.stringify(this.state.order))
+
+       
     }
+    // componentDidUpdate(){
+    //     window.gapi.load('auth2', function() {
+    //         window.gapi.auth2.init({
+    //             client_id: '221380827665-s1fh9lqjp1tgns0skn8bgh1nmikln0e5.apps.googleusercontent.com'
+    //         }).then(() => console.log('init ok'), () => console.log('no ok errr'))   
+    //       });
+    // }
 
     componentWillUnmount(){
         base.removeBinding(this.ref);
@@ -86,7 +95,7 @@ handleLogout = async () => {
         
 
         return(
-            <SignIn>
+          
             <div className='burger-paradise'>
                 <div className ='menu' >
                     <Header title='Very Hot Burger' amount={10} hot={true} />
@@ -106,6 +115,7 @@ handleLogout = async () => {
                 order={this.state.order}
                 deleteFromOrder = {this.deleteFromOrder}
                 />
+                <SignIn>
                 <MenuAdmin 
                 addBurger ={this.addBurger}
                 loadSampleBurgers={this.loadSampleBurgers}
@@ -114,8 +124,9 @@ handleLogout = async () => {
                 deleteBurger={this.deleteBurger}
                 handLeLogout={this.handleLogout}
                 />
+                </SignIn>
             </div>
-            </SignIn>
+            
         )
     }
 }

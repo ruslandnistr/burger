@@ -9,3 +9,5 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+client_id: { 221380827665-s1fh9lqjp1tgns0skn8bgh1nmikln0e5.apps.googleusercontent.com }
